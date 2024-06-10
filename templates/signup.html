@@ -1,0 +1,175 @@
+{% extends "base.html" %}
+{% block title %}Signup{% endblock title %}
+{% block body %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+    }
+
+    .signup-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .signup-container h2 {
+        text-align: center;
+        color: #333;
+    }
+
+    .signup-form {
+        margin-top: 20px;
+    }
+
+    .signup-form input[type="email"], 
+    .signup-form input[type="text"],
+    .signup-form input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+
+    .signup-form input[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #28a745;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .signup-form input[type="submit"]:hover {
+        background-color: #218838;
+    }
+
+    .signup-form p {
+        text-align: center;
+        margin-top: 15px;
+    }
+
+    .signup-form a {
+        color: #007bff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .signup-form a:hover {
+        color: #0056b3;
+    }
+
+    .error {
+        color: red;
+        text-align: center;
+        margin-top: -15px;
+        margin-bottom: 15px;
+    }
+
+    .loader {
+        display: none;
+        border: 8px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 8px solid #3498db;
+        width: 60px;
+        height: 60px;
+        animation: spin 2s linear infinite;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1001;
+    }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+</style>
+
+<div class="signup-container">
+    <h2>Sign Up</h2>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <p class="{{ message.tags }}" id="django-message">{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form class="signup-form" id="signup-form" action="{% url 'signup' %}" method="post" onsubmit="return validateAndShowLoader()">
+        {% csrf_token %}
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="password" name="password" id="password" placeholder="Password" required>
+        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+        <div class="error" id="error-message" style="display: none;">Passwords do not match</div>
+        <input type="submit" value="Signup">
+    </form>
+    <p>Already have an account? <a href="/login">Login</a></p>
+</div>
+
+<div class="overlay" id="overlay"></div>
+<div class="loader" id="loader"></div>
+
+<script>
+    function validatePasswords() {
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirm_password').value;
+        var errorMessage = document.getElementById('error-message');
+
+        if (password !== confirmPassword) {
+            errorMessage.style.display = 'block';
+            return false;
+        } else {
+            errorMessage.style.display = 'none';
+            return true;
+        }
+    }
+
+    function showLoader() {
+        document.querySelector('.signup-form').style.display = 'none';
+        document.getElementById('loader').style.display = 'block';
+        document.getElementById('overlay').style.display = 'block';
+    }
+
+    function validateAndShowLoader() {
+        if (validatePasswords()) {
+            showLoader();
+            return true;
+        }
+        return false;
+    }
+
+    document.querySelectorAll('.signup-form input').forEach(input => {
+        input.addEventListener('input', function() {
+            document.getElementById('error-message').style.display = 'none';
+            const djangoMessage = document.getElementById('django-message');
+            if (djangoMessage) {
+                djangoMessage.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock body %}

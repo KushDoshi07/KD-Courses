@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us{% endblock title %}
+
+{% block body %}
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .contact-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-container h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .contact-form {
+            margin-top: 20px;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            resize: none; 
+        }
+
+        .contact-form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .contact-form p {
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+    <div class="contact-container">
+        <h2>Contact Us</h2>
+        <form class="contact-form" action="/contact" method="POST">
+            {% csrf_token %}
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Your Message" rows="6" required></textarea>
+            <input type="submit" value="Send Message">
+        </form>
+        <p>We'll get back to you as soon as possible!</p>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {{ message.tags }}">
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+{% endblock body %}

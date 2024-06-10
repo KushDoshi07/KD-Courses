@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to KD Courses{% endblock title %}
+
+{% block body %}
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 20px;
+            background-color: #343a40;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        .header .user-info span {
+            margin-right: 15px;
+        }
+
+        .header .logout-icon {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+        }
+
+        .header .logout-icon i {
+            margin-left: 5px;
+        }
+
+        .welcome-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 70px);
+            text-align: center;
+        }
+
+        .welcome-container h1 {
+            color: #343a40;
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-container p {
+            color: #666;
+            margin: 10px 0 30px;
+            font-size: 18px;
+        }
+
+        .welcome-container a {
+            display: inline-block;
+            padding: 12px 25px;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .welcome-container a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+    <div class="header">
+        <div class="user-info">
+            <span>Welcome {{ request.user }}</span>
+            <a class="logout-icon" href="/logout">
+                <span>Logout</span>
+                <i class="fas fa-sign-out-alt"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="welcome-container">
+        <h1>Welcome to KD Courses!</h1>
+        <p>You have successfully logged in.</p>
+        <a href="/courses">Browse Courses</a>
+    </div>
+
+    {% block nav %}<center-align>{% endblock nav %}
+{% endblock body %}

@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock title %}
+{% block body %}<br><br>
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .carousel {
+            position: relative;
+            width: 80%;
+            max-width: 800px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            box-sizing: border-box;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            display: block;
+        }
+
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .carousel-control.prev {
+            left: 10px;
+        }
+
+        .carousel-control.next {
+            right: 10px;
+        }
+    </style>
+    <div class="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="/static/Image-1.jpg" alt="Image 1">
+            </div>
+            <div class="carousel-item">
+                <img src="/static/Image-2.jpg" alt="Image 2">
+            </div>
+            <div class="carousel-item">
+                <img src="/static/Image-3.jpg" alt="Image 3">
+            </div>
+        </div>
+        <button class="carousel-control prev" onclick="prevSlide()">&#10094;</button>
+        <button class="carousel-control next" onclick="nextSlide()">&#10095;</button>
+    </div>
+    <script>
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.carousel-item');
+            if (index >= slides.length) {
+                currentIndex = 0;
+            } else if (index < 0) {
+                currentIndex = slides.length - 1;
+            } else {
+                currentIndex = index;
+            }
+
+            const offset = -currentIndex * 100;
+            document.querySelector('.carousel-inner').style.transform = `translateX(${offset}%)`;
+
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === currentIndex);
+            });
+        }
+
+        function nextSlide() {
+            showSlide(currentIndex + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentIndex - 1);
+        }
+    </script>
+{% endblock body %}
